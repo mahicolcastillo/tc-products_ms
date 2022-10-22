@@ -1,6 +1,6 @@
 {
   "name": "tc-products_ms",
-  "version": "1.0.4",
+  "version": "1.0.0",
   "description": "Microservice for products on tucomanda",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "test": "jest",
     "test:coverage": "export NODE_ENV=local && (. ./scripts/enviroment_variables.sh && jest --env=node --coverage )",
     "eslint": "eslint . --ext .ts",
-    "tsc": "tsc --build"
+    "build": "tsc --build"
   },
   "repository": {
     "type": "git",
