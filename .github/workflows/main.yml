@@ -2,6 +2,8 @@ name: CI/CD
 on:
   push:
     branches: [tucomanda_dev]
+  pull_request:
+    branches: [tucomanda_dev]
 jobs:
   Deploy:
     runs-on: ubuntu-latest
