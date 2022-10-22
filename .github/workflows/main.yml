@@ -14,6 +14,7 @@ jobs:
         access_token: ${{ github.token }}
 
   Lint:
+    needs: [Avoid_Redundancy]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -28,6 +29,7 @@ jobs:
       run: npm run eslint
 
   Build:
+    needs: [Avoid_Redundancy]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -65,42 +67,38 @@ jobs:
       run: npm run test
 
 
-  # Deploy:
-  #   runs-on: ubuntu-latest
-  #   steps:    
-  #   - name: Update SHA
-  #     run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/app/_meta
-
-  #   - name: Build image
-  #     if: ${{ github.event_name == 'push' }}
-  #     run: docker build -t registry.digitalocean.com/tucomandaqa/tc-products-ms:$(echo $GITHUB_SHA | head -c7) .
-
-  #   - name: Install doctl
-  #     if: ${{ github.event_name == 'push' }}
-  #     uses: digitalocean/action-doctl@v2
-  #     with:
-  #       token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-
-  #   - name: Log in Container Registry
-  #     if: ${{ github.event_name == 'push' }}
-  #     run: doctl registry login --expiry-seconds 600
-
-  #   - name: Push image
-  #     if: ${{ github.event_name == 'push' }}
-  #     run: docker push registry.digitalocean.com/tucomandaqa/tc-products-ms:$(echo $GITHUB_SHA | head -c7)
-
-  #   - name: Update deployment file
-  #     if: ${{ github.event_name == 'push' }}
-  #     run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/tucomandaqa/tc-products-ms:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
-
-  #   - name: Save config cluster
-  #     if: ${{ github.event_name == 'push' }}
-  #     run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 tucomandaqa
-
-  #   - name: Deploy Kubernetes
-  #     if: ${{ github.event_name == 'push' }}
-  #     run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
-
-  #   - name: Verify deployment
-  #     if: ${{ github.event_name == 'push' }}
-  #     run: kubectl rollout status deployment/tc-products-ms -n microservices
+  Deploy:
+    needs: [UnitTest]
+    runs-on: ubuntu-latest
+    steps:    
+    - uses: actions/checkout@v3
+      with: 
+        fetch-depth: 0
+    - name: Update SHA
+      run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/app/_meta
+    - name: Build image
+      if: ${{ github.event_name == 'push' }}
+      run: docker build -t registry.digitalocean.com/tucomandaqa/tc-products-ms:$(echo $GITHUB_SHA | head -c7) .
+    - name: Install doctl
+      if: ${{ github.event_name == 'push' }}
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    - name: Log in Container Registry
+      if: ${{ github.event_name == 'push' }}
+      run: doctl registry login --expiry-seconds 600
+    - name: Push image
+      if: ${{ github.event_name == 'push' }}
+      run: docker push registry.digitalocean.com/tucomandaqa/tc-products-ms:$(echo $GITHUB_SHA | head -c7)
+    - name: Update deployment file
+      if: ${{ github.event_name == 'push' }}
+      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/tucomandaqa/tc-products-ms:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
+    - name: Save config cluster
+      if: ${{ github.event_name == 'push' }}
+      run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 tucomandaqa
+    - name: Deploy Kubernetes
+      if: ${{ github.event_name == 'push' }}
+      run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
+    - name: Verify deployment
+      if: ${{ github.event_name == 'push' }}
+      run: kubectl rollout status deployment/tc-products-ms -n microservices
