@@ -36,7 +36,7 @@ const parseVar = (origElem: any) => {
   if (typeof origElem[objKeys[0]] === "object") {
     // En caso de ser una categoría
     // Se itera por cada sub propiedad
-    for (let key of objKeys) {
+    for (const key of objKeys) {
       parsedElem[key] = parseVar(origElem[key]); // NOTE: recursive call, use with care
     }
   } else if (

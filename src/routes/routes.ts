@@ -1,7 +1,9 @@
-import { Express } from 'express'; 
+import { Express }          from 'express'; 
+import { Logger as log }    from 'tslog';
+const logger : log = new log(); 
 
 const routes = (app: Express) => {
-    console.log('aca van las rutas');
+    logger.info('Aqui van las rutas');
 }
 
 export default routes;
