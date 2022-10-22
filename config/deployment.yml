@@ -33,9 +33,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: tc-products-ms-service
+  name: tc-products-ms
   labels:
-    app: tc-products-ms-service
+    app: tc-products-ms
 spec:
   type: LoadBalancer
   ports:
