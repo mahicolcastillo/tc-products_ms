@@ -1,6 +1,6 @@
 import { parseConfig } from '../utils/parseConfig.util';
 
-export const config = parseConfig({
+const config = parseConfig({
     globalPath: {
         info        : "Base path for microservice",
         default     : "/microservice/tc-products_ms",
@@ -17,3 +17,5 @@ export const config = parseConfig({
         required    : true,
     }
 });
+
+export default config;

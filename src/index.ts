@@ -4,8 +4,8 @@ import bodyParser           from 'body-parser';
 import { Logger as log }    from 'tslog';
 require('express-async-errors');
 
-import { config }   from "../src/config/global";
-import routes       from './routes/routes';
+import config   from "../src/config/global";
+import routes   from './routes/routes';
 
 const app = express();
 const logger : log = new log(); 
