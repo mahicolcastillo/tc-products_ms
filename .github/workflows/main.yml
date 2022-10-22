@@ -1,4 +1,4 @@
-name: Demo GitHub Actions
+name: Pipeline TuComanda Microservice Products
 on:
   push:
     branches: [ main ]
