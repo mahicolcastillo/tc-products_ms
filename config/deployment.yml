@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: static-example
+  name: tc-products-ms
   labels:
-    app: static-example
+    app: tc-products-ms
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: static-example
+      app: tc-products-ms
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -17,10 +17,10 @@ spec:
   template:
     metadata:
       labels:
-        app: static-example
+        app: tc-products-ms
     spec:
       containers:
-      - name: static-example
+      - name: tucomandaqa
         image: <IMAGE>
         ports:
         - containerPort: 5000
@@ -28,19 +28,14 @@ spec:
           requests:
             cpu: 100m
           limits:
-            cpu: 100m
-      imagePullSecrets:
-      - name: asb
+            cpu: 100m        
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: static-example-service
-  annotations:
-    external-dns.alpha.kubernetes.io/hostname: "doctl-action.do-api.dev"
-    service.beta.kubernetes.io/do-loadbalancer-name: "doctl-action.do-api.dev"
-    service.beta.kubernetes.io/do-loadbalancer-certificate-id: "913a4f25-dd44-47e0-8588-eb09f095c7e2"
-    service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: "true"
+  name: tc-products-ms-service
+  labels:
+    app: tc-products-ms-service
 spec:
   type: LoadBalancer
   ports:
@@ -49,4 +44,4 @@ spec:
       port: 443
       targetPort: 5000
   selector:
-    app: static-example
+    app: tc-products-ms

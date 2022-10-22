@@ -26,7 +26,7 @@ jobs:
     - name: Update SHA
       run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/app/_meta
 
-    - name: Build container image
+    - name: Build image
       run: docker build -t registry.digitalocean.com/tucomandaqa/tc-products-ms:$(echo $GITHUB_SHA | head -c7) .
 
     - name: Install doctl
@@ -37,17 +37,17 @@ jobs:
     - name: Log in to DigitalOcean Container Registry with short-lived credentials
       run: doctl registry login --expiry-seconds 600
 
-    - name: Push image to DigitalOcean Container Registry
+    - name: Push image
       run: docker push registry.digitalocean.com/tucomandaqa/tc-products-ms:$(echo $GITHUB_SHA | head -c7)
 
     - name: Update deployment file
-      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/asb/static-example:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
+      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/tucomandaqa/tc-products-ms:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
 
-    - name: Save DigitalOcean kubeconfig with short-lived credentials
-      run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 actions-example-k8s-1-18
+    - name: Save config cluster
+      run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 tucomandaqa
 
-    - name: Deploy to DigitalOcean Kubernetes
-      run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
+    #- name: Deploy to DigitalOcean Kubernetes
+     # run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
 
-    - name: Verify deployment
-      run: kubectl rollout status deployment/static-example
+   # - name: Verify deployment
+   #   run: kubectl rollout status deployment/static-example
