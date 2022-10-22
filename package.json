@@ -1,6 +1,6 @@
 {
   "name": "tc-products_ms",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "Microservice for products on tucomanda",
   "main": "index.js",
   "scripts": {
