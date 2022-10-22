@@ -1,4 +1,4 @@
-name: Pipeline TuComanda Microservice Products
+name: CI/CD
 on:
   push:
     branches:
