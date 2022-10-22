@@ -1,16 +1,15 @@
 FROM node:16-alpine3.15
 
-WORKDIR /home/app
+WORKDIR /usr
 
 COPY package.json ./
 COPY tsconfig.json ./
-#COPY .env ./
-COPY src ./src
 
-RUN npm install typescript --g
+COPY src ./src
+RUN ls -a
 RUN npm install
-RUN npm run tsc
+# RUN npm run tsc
 
 EXPOSE 3000
 
-CMD ["node", "./dist/src/index.js"]
+CMD ["npm","run","debug"]
