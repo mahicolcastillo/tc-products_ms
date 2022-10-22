@@ -6,5 +6,5 @@ module.exports = {
     },
     transformIgnorePatterns: ['<rootDir>/node_modules/'],
     collectCoverage: true,
-    collectCoverageFrom: ['src/**/*.{ts}'],
+    collectCoverageFrom: ['src/**/*.{ts,jxs}'],
   };
