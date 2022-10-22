@@ -4,5 +4,7 @@ jobs:
   unitTest:
     runs-on: ubuntu-latest
     steps:
+    - name: Install dependencies
+      run: npm ci
     - name: Test
       run: npm test
