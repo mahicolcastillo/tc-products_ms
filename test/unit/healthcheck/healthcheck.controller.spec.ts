@@ -1,7 +1,8 @@
 import controller               from '../../../src/components/healtcheck/healthcheck.controller';
 import { Request, Response }    from 'express';
 
-const httpMocks    = require('node-mocks-http');
+/* eslint-disable */
+const httpMocks = require('node-mocks-http');
 
 describe('Healthcheck Controller', () => {
     let req: Request, res: Response;
