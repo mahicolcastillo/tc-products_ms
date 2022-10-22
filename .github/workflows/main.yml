@@ -24,7 +24,7 @@ jobs:
       run: npm run test
     
     - name: Update SHA
-      run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/site/_meta
+      run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/app/_meta
 
     - name: Build container image
       run: docker build -t registry.digitalocean.com/tucomandaqa/tc-products-ms:$(echo $GITHUB_SHA | head -c7) .
