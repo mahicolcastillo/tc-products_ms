@@ -1,2 +1,3 @@
-# tc-products_ms
+# TuComanda Products MS
+
 Microservice for products on tucomanda
