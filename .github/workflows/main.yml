@@ -68,7 +68,7 @@ jobs:
     needs: [UnitTest]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v2
       with: 
         fetch-depth: 0
     - uses: actions/setup-node@v3
@@ -76,16 +76,14 @@ jobs:
         node-version: '14.18.1'
     - name: Install dependencies
       run: npm ci
-    - uses: actions/download-artifact@v2
+    - name: unitTest
+      run: npm run test:coverage
+    - name: Check test coverage
+      id: test-coverage
+      uses: johanvanhelden/gha-clover-test-coverage-check@v1
       with:
-        name: dist
-        path: dist
-    - uses: devmasx/coverage-check-action@v1.2.0
-      with:
-        type: lcov
-        result_path: coverage/lcov.info
-        min_coverage: 90
-        token: ${{ github.token }}
+        percentage: "90"
+        filename: "./coverage/clover.xml"
 
 
   # Deploy:
