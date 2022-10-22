@@ -5,6 +5,20 @@ module.exports = {
       '^.+\\.ts?$': 'ts-jest',
     },
     transformIgnorePatterns: ['<rootDir>/node_modules/'],
-    // collectCoverage: true,
-    // collectCoverageFrom: ['src/**/*.{ts,jxs}'],
+    coverageThreshold: {
+      global: {
+        lines: 90,
+        statements: 90
+      }
+    },
+    testMatch: [
+      "<rootDir>/test/**/*.spec.ts"
+    ],
+    collectCoverageFrom: [
+      '<rootDir>/src/**/*.{ts,jxs}',
+      '!<rootDir>/src/config/*.{ts,jxs}',
+      '!<rootDir>/src/utils/**',
+      '!<rootDir>/src/routes/**',
+      '!<rootDir>/src/index.ts',
+    ],
   };

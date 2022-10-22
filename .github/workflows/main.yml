@@ -85,32 +85,31 @@ jobs:
         percentage: "90"
         filename: "./coverage/clover.xml"
 
-
-  # Deploy:
-  #   needs: [Coverage]
-  #   if: ${{ github.event_name == 'push' }}
-  #   runs-on: ubuntu-latest
-  #   steps:    
-  #   - uses: actions/checkout@v3
-  #     with: 
-  #       fetch-depth: 0
-  #   - name: Update SHA
-  #     run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/app/_meta
-  #   - name: Build image
-  #     run: docker build -t registry.digitalocean.com/tucomandaqa/tc-products-ms:$(echo $GITHUB_SHA | head -c7) .
-  #   - name: Install doctl
-  #     uses: digitalocean/action-doctl@v2
-  #     with:
-  #       token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-  #   - name: Log in Container Registry
-  #     run: doctl registry login --expiry-seconds 600
-  #   - name: Push image
-  #     run: docker push registry.digitalocean.com/tucomandaqa/tc-products-ms:$(echo $GITHUB_SHA | head -c7)
-  #   - name: Update deployment file
-  #     run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/tucomandaqa/tc-products-ms:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
-  #   - name: Save config cluster
-  #     run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 tucomandaqa
-  #   - name: Deploy Kubernetes
-  #     run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
-  #   - name: Verify deployment
-  #     run: kubectl rollout status deployment/tc-products-ms -n microservices
+  Deploy:
+    needs: [Coverage]
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    steps:    
+    - uses: actions/checkout@v3
+      with: 
+        fetch-depth: 0
+    - name: Update SHA
+      run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/app/_meta
+    - name: Build image
+      run: docker build -t registry.digitalocean.com/tucomandaqa/tc-products-ms:$(echo $GITHUB_SHA | head -c7) .
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    - name: Log in Container Registry
+      run: doctl registry login --expiry-seconds 600
+    - name: Push image
+      run: docker push registry.digitalocean.com/tucomandaqa/tc-products-ms:$(echo $GITHUB_SHA | head -c7)
+    - name: Update deployment file
+      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/tucomandaqa/tc-products-ms:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
+    - name: Save config cluster
+      run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 tucomandaqa
+    - name: Deploy Kubernetes
+      run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
+    - name: Verify deployment
+      run: kubectl rollout status deployment/tc-products-ms -n microservices
