@@ -39,11 +39,10 @@ metadata:
   labels:
     app: tc-products-ms
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
-    - name: https
-      protocol: TCP
-      port: 3000
-      targetPort: 5000
+    - port: 3000
+      targetPort: 3000
+      nodePort: 5000
   selector:
     app: tc-products-ms
