@@ -51,19 +51,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - run: ls -la
-    - name: Check if version has been updated
-      id: check
-      uses: EndBug/version-check@v1
+    - uses: del-systems/check-if-version-bumped@v1
       with:
         token: ${{ github.token }}
-    - run: echo ${{ steps.check.outputs.changed }}
-    - name: Log when changed
-      if: steps.check.outputs.changed == 'true'
-      run: 'echo "Version change found in commit ${{ steps.check.outputs.commit }}! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
-    - name: Log when unchanged
-      if: steps.check.outputs.changed == 'false'
-      run: 'echo "No version change :/"'
 
   UnitTest:
     needs: [Lint, Build]
