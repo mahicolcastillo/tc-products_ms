@@ -13,8 +13,20 @@ jobs:
       with:
         access_token: ${{ github.token }}
 
+  Validate:
+    name: Validate version
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # Use this GitHub Action
+      - name: Check package version
+        uses: technote-space/package-version-check-action@v1
+        with:
+          BRANCH_PREFIX: release/
+
   Lint:
-    needs: [Start]
+    needs: [Validate]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -45,15 +57,6 @@ jobs:
       with:
         name: dist
         path: dist
-
-  Start:
-    needs: [Build]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - uses: del-systems/check-if-version-bumped@v1
-      with:
-        token: ${{ github.token }}
 
   UnitTest:
     needs: [Lint, Build]
