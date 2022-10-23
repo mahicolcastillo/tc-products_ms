@@ -17,15 +17,13 @@ jobs:
     name: Validate version
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
       - run: git fetch --all --tags
-
       - name: Check Release Version
         uses: thebongy/version-check@v1
         with:
           file: package.json
-          tagFormat: v${version}-beta
+          tagFormat: v${version}
         id: version_check_staging
       - run: echo "Version ${{steps.version_check_staging.outputs.releaseVersion}}"
 
@@ -86,7 +84,7 @@ jobs:
     needs: [UnitTest]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with: 
         fetch-depth: 0
     - uses: actions/setup-node@v3
@@ -102,6 +100,34 @@ jobs:
       with:
         percentage: "90"
         filename: "./coverage/clover.xml"
+
+  Release:
+    needs: [Coverage]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: git fetch --all --tags
+      - name: Check Release Version
+        uses: thebongy/version-check@v1
+        with:
+          file: package.json
+          tagFormat: v${version}
+        id: version_check_staging
+      - run: echo "${{steps.version_check_staging.outputs.releaseVersion}}"
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          tag_name: ${{steps.version_check_staging.outputs.releaseVersion}}
+          release_name: Release ${{steps.version_check_staging.outputs.releaseVersion}}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false
 
   # Deploy:
   #   needs: [Coverage]
