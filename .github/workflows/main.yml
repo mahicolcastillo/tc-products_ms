@@ -23,6 +23,7 @@ jobs:
       - name: Check package version
         uses: technote-space/package-version-check-action@v1
         with:
+          GITHUB_TOKEN: ${{ github.token }}
           BRANCH_PREFIX: tucomanda_dev/
 
   Lint:
