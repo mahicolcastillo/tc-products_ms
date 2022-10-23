@@ -137,56 +137,57 @@ jobs:
          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
          heroku_app_name: ${{secrets.HEROKU_APP}}
          heroku_email: ${{secrets.HEROKU_MAIL}}
+         usedocker: true
 
-  Release:
-    needs: [DeployQA]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: git fetch --all --tags
-      - name: Check Release Version
-        uses: thebongy/version-check@v1
-        with:
-          file: package.json
-          tagFormat: v${version}
-        id: version_check_staging
-      - run: echo "${{steps.version_check_staging.outputs.releaseVersion}}"
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          tag_name: ${{steps.version_check_staging.outputs.releaseVersion}}
-          release_name: Release ${{steps.version_check_staging.outputs.releaseVersion}}
-          draft: false
-          prerelease: false
+  # Release:
+  #   needs: [DeployQA]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - run: git fetch --all --tags
+  #     - name: Check Release Version
+  #       uses: thebongy/version-check@v1
+  #       with:
+  #         file: package.json
+  #         tagFormat: v${version}
+  #       id: version_check_staging
+  #     - run: echo "${{steps.version_check_staging.outputs.releaseVersion}}"
+  #     - name: Create Release
+  #       id: create_release
+  #       uses: actions/create-release@v1
+  #       env:
+  #         GITHUB_TOKEN: ${{ github.token }}
+  #       with:
+  #         tag_name: ${{steps.version_check_staging.outputs.releaseVersion}}
+  #         release_name: Release ${{steps.version_check_staging.outputs.releaseVersion}}
+  #         draft: false
+  #         prerelease: false
 
-  DeployProd:
-    needs: [Release]
-    if: ${{ github.event_name == 'push' }}
-    runs-on: ubuntu-latest
-    steps:    
-    - uses: actions/checkout@v3
-      with: 
-        fetch-depth: 0
-    - name: Update SHA
-      run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/app/_meta
-    - name: Build image
-      run: docker build -t registry.digitalocean.com/tucomandaqa/tc-products-ms:$(echo $GITHUB_SHA | head -c7) .
-    - name: Install doctl
-      uses: digitalocean/action-doctl@v2
-      with:
-        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-    - name: Log in Container Registry
-      run: doctl registry login --expiry-seconds 600
-    - name: Push image
-      run: docker push registry.digitalocean.com/tucomandaqa/tc-products-ms:$(echo $GITHUB_SHA | head -c7)
-    - name: Update deployment file
-      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/tucomandaqa/tc-products-ms:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
-    - name: Save config cluster
-      run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 tucomandaqa
-    - name: Deploy Kubernetes
-      run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
-    - name: Verify deployment
-      run: kubectl rollout status deployment/tc-products-ms -n microservices
+  # DeployProd:
+  #   needs: [Release]
+  #   if: ${{ github.event_name == 'push' }}
+  #   runs-on: ubuntu-latest
+  #   steps:    
+  #   - uses: actions/checkout@v3
+  #     with: 
+  #       fetch-depth: 0
+  #   - name: Update SHA
+  #     run: echo $GITHUB_SHA > $GITHUB_WORKSPACE/app/_meta
+  #   - name: Build image
+  #     run: docker build -t registry.digitalocean.com/tucomandaqa/tc-products-ms:$(echo $GITHUB_SHA | head -c7) .
+  #   - name: Install doctl
+  #     uses: digitalocean/action-doctl@v2
+  #     with:
+  #       token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+  #   - name: Log in Container Registry
+  #     run: doctl registry login --expiry-seconds 600
+  #   - name: Push image
+  #     run: docker push registry.digitalocean.com/tucomandaqa/tc-products-ms:$(echo $GITHUB_SHA | head -c7)
+  #   - name: Update deployment file
+  #     run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/tucomandaqa/tc-products-ms:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
+  #   - name: Save config cluster
+  #     run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 tucomandaqa
+  #   - name: Deploy Kubernetes
+  #     run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
+  #   - name: Verify deployment
+  #     run: kubectl rollout status deployment/tc-products-ms -n microservices
