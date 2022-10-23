@@ -22,8 +22,6 @@ jobs:
       # Use this GitHub Action
       - name: Check package version
         uses: technote-space/package-version-check-action@v1
-        with:
-          BRANCH_PREFIX: release/
 
   Lint:
     needs: [Validate]
