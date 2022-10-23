@@ -4,7 +4,7 @@
   "description": "Microservice for products on tucomanda",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/src/index.js",
+    "start": "(. ./scripts/enviroment_variables.sh && nodemon src/index.ts | pino-pretty -t)",
     "debug": "(. ./scripts/enviroment_variables.sh && nodemon src/index.ts | pino-pretty -t)",
     "test": "jest",
     "test:coverage": "export NODE_ENV=local && (. ./scripts/enviroment_variables.sh && jest --env=node --coverage )",
