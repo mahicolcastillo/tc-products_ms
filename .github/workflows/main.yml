@@ -5,6 +5,19 @@ on:
   pull_request:
     branches: [tucomanda_dev]
 jobs:
+  Start:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check if version has been updated
+      id: check
+      uses: EndBug/version-check@v1
+    - name: Log when changed
+      if: steps.check.outputs.changed == 'true'
+      run: 'echo "Version change found in commit ${{ steps.check.outputs.commit }}! New version: ${{ steps.check.outputs.version }} (${{ steps.check.outputs.type }})"'
+    - name: Log when unchanged
+      if: steps.check.outputs.changed == 'false'
+      run: 'echo "No version change :/"'
+
   Avoid_Redundancy:
     runs-on: ubuntu-latest
     steps:
@@ -14,6 +27,7 @@ jobs:
         access_token: ${{ github.token }}
 
   Lint:
+    needs: [Start]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -28,6 +42,7 @@ jobs:
       run: npm run eslint
 
   Build:
+    needs: [Start]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
