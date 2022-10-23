@@ -17,12 +17,8 @@ const serverStart = async() => {
 
         routes(app);
 
-        // app.listen(config.port, () => {
-        //     logger.info(`Server listening on ${config.port}, with basepath ${config.globalPath}`);
-        // });
-
-        app.listen(process.env.PORT || 5000, () => {
-            logger.info(`Server listening on ${process.env.PORT || 5000}, with basepath ${config.globalPath}`);
+        app.listen(process.env.PORT || config.port || 3000, () => {
+            logger.info(`Server listening on ${process.env.PORT || config.port ||  3000}, with basepath ${config.globalPath}`);
         });
     } catch (error) {
         logger.error('Error init server', error);
