@@ -30,6 +30,8 @@ jobs:
   Sonar:
     needs: [Validate]
     runs-on: ubuntu-latest
+    environment:
+      name: PRODCALL
     steps:
     - uses: actions/checkout@v1
       with:
