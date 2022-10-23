@@ -11,6 +11,6 @@ RUN ls -a
 RUN npm install
 # RUN npm run tsc
 
-EXPOSE 3000
+EXPOSE $PORT
 
 CMD ["npm","run","debug"]
