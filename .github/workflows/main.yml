@@ -29,7 +29,6 @@ jobs:
         id: version_check_staging
       - run: echo "Version ${{steps.version_check_staging.outputs.releaseVersion}}"
 
-#al
   Lint:
     needs: [Validate]
     runs-on: ubuntu-latest
