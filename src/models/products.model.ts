@@ -1,4 +1,4 @@
-import { Sequelize, Model, DataTypes } from 'sequelize';
+import { Sequelize, DataTypes } from 'sequelize';
 
 const sequelize = new Sequelize('tucomand_demo', 'root', 'plokio', {
     host: 'localhost',
