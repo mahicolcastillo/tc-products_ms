@@ -17,9 +17,11 @@ module.exports = {
     collectCoverageFrom: [
       '<rootDir>/src/**/*.{ts,jxs}',
       '!<rootDir>/src/**/*.route.{ts,jxs}',
+      '!<rootDir>/src/**/*.config.{ts,jxs}',
       '!<rootDir>/src/config/*.{ts,jxs}',
       '!<rootDir>/src/utils/**',
       '!<rootDir>/src/routes/**',
+      '!<rootDir>/src/models/**',
       '!<rootDir>/src/index.ts',
     ],
   };

@@ -8,7 +8,7 @@ import config   from "../src/config/global";
 import routes   from './routes/routes';
 
 const app = express();
-const logger : log = new log(); 
+const logger : log = new log({ displayFunctionName: false}); 
 
 const serverStart = async() => {
     try {

@@ -1,7 +1,11 @@
 const routeNames = {
     healthcheck: {
         name: 'healthcheck',
-        verb: 'GET'
+        verb: 'GET',
+    },
+    getProducts: {
+        name: 'getProducts',
+        verb: 'GET',
     }
 }
 
