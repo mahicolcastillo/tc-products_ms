@@ -11,7 +11,8 @@ const getProductsModule = async(headers: HeadersInterface): Promise<ResponseInte
     try {
         logger.info(`Entrance`);
         const response = await getProductsService(headers);
-
+        logger.debug(`Response data: ${JSON.stringify(response)}`);
+        
         return new OutputMessage(response).success();
     } catch (error) {
         logger.error(error);

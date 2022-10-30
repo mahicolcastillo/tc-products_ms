@@ -8,8 +8,8 @@ jest.mock('../../../src/components/getProducts/getProducts.module');
 
 describe(name, () => {
     test(`${name} - OK`, async () => {
-        let req = createRequest();
-        let res = createResponse();
+        const req = createRequest();
+        const res = createResponse();
 
         (getProductsModule as jest.MockedFunction<any>) = jest.fn().mockResolvedValue({
             code: 200,
@@ -22,8 +22,8 @@ describe(name, () => {
     });
 
     test(`${name} - NOK`, async () => {
-        let req = createRequest();
-        let res = createResponse();
+        const req = createRequest();
+        const res = createResponse();
 
         (getProductsModule as jest.MockedFunction<any>) = jest.fn().mockRejectedValue({
             code: 500,
@@ -31,7 +31,10 @@ describe(name, () => {
             payload: {}    
         });
 
-        const response = await getProductsController(req, res);
-        expect(response.statusCode).toBe(500);
+        try {
+            await getProductsController(req, res);
+        } catch (error) {
+            expect(error).toBeTruthy();
+        }
     });
 });

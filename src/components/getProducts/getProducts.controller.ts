@@ -12,6 +12,7 @@ const getProductsController = async(req: Request, res: Response) => {
     try {
         logger.info(`Entrance`);
         const response: ResponseInterface = await getProductsModule(cleanHeaders(req.headers));
+        logger.debug(`Response data: ${JSON.stringify(response)}`);
 
         return res.status(response.code).send(response);
     } catch (error: any) {

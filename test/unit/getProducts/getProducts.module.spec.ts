@@ -6,7 +6,7 @@ const name = 'getProductsModule';
 jest.mock('../../../src/components/getProducts/getProducts.service');
 
 describe(name, () => {
-    let headers = {test: 'test'};
+    const headers = {test: 'test'};
 
     test(`${name} - OK`, async () => {
         (getProductsService as jest.MockedFunction<any>) = jest.fn().mockResolvedValue([

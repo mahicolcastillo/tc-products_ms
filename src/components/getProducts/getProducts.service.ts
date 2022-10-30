@@ -1,7 +1,7 @@
 import { Logger as log }    from 'tslog';
 
 import HeadersInterface     from "../../interfaces/headers.interface";
-import ProductModel         from '../../models/productsMock.model';
+import ProductModel         from '../../models/products.model';
 
 const logger : log = new log({ displayFunctionName: false}); 
 
