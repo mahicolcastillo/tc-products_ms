@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node dist/src/index.js",
     "debug": "(. ./scripts/enviroment_variables.sh && nodemon src/index.ts | pino-pretty -t)",
-    "test": "jest",
-    "test:coverage": "export NODE_ENV=local && (. ./scripts/enviroment_variables.sh && jest --env=node --coverage )",
+    "test": "(. ./scripts/enviroment_variables.sh && jest --env=node )",
+    "test:coverage": "(. ./scripts/enviroment_variables.sh && jest --env=node --coverage )",
     "eslint": "eslint . --ext .ts",
     "build": "tsc --build"
   },
