@@ -91,6 +91,7 @@ export const parseConfig = (config: any) => {
 
     return parsedConfig;
   } catch (e) {
+    console.log('Error env', e);
     process.exit(1);
   }
 }
