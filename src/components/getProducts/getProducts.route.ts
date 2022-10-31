@@ -1,11 +1,17 @@
-import { Express }              from 'express';
+import { Express }                  from 'express';
 
-import getProductsController    from './getProducts.controller';
-import routeNames               from '../../routes/routesNames';
+import expressValidatorMiddleware   from '../../middleware/express-validator.middleware';
+import getProductsController        from './getProducts.controller';
+import routeNames                   from '../../routes/routesNames';
+import validation                   from '../../middleware/getProducts.middleware';
+import validateJWT                  from '../../middleware/validateJWT.middleware';
 
 const getProductsRoute = (app: Express, globalPath: string) => {
     app.get(
-        `${globalPath}/${routeNames.getProducts.name}`, 
+        `${globalPath}/${routeNames.getProducts.name}`,
+        validation,
+        expressValidatorMiddleware,
+        validateJWT,
         getProductsController
     );
 }

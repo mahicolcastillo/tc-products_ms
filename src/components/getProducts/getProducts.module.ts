@@ -1,17 +1,16 @@
-import getProductsService   from './getProducts.service';
-import { Logger as log }    from 'tslog';
+import { IncomingHttpHeaders }  from 'http';
+import { Logger as log }        from 'tslog';
 
-import HeadersInterface     from '../../interfaces/headers.interface';
+import getProductsService   from './getProducts.service';
 import OutputMessage        from '../../utils/outputMessage.util';
 import ResponseInterface    from '../../interfaces/response.interface';
 
 const logger : log = new log({ displayFunctionName: false}); 
 
-const getProductsModule = async(headers: HeadersInterface): Promise<ResponseInterface> => {
+const getProductsModule = async(headers: IncomingHttpHeaders): Promise<ResponseInterface> => {
     try {
-        logger.info(`Entrance`);
+        logger.info(`Starting module getProducts`);
         const response = await getProductsService(headers);
-        logger.debug(`Response data: ${JSON.stringify(response)}`);
         
         return new OutputMessage(response).success();
     } catch (error) {

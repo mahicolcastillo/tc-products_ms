@@ -22,6 +22,7 @@ module.exports = {
       '!<rootDir>/src/utils/**',
       '!<rootDir>/src/routes/**',
       '!<rootDir>/src/models/**',
+      '!<rootDir>/src/middleware/**',
       '!<rootDir>/src/index.ts',
     ],
   };

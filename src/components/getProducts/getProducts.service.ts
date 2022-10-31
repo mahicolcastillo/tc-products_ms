@@ -1,20 +1,20 @@
-import { Logger as log }    from 'tslog';
+import { IncomingHttpHeaders }  from 'http';
+import { Logger as log }        from 'tslog';
 
-import HeadersInterface     from "../../interfaces/headers.interface";
-import ProductModel         from '../../models/products.model';
+import ProductModel             from '../../models/products.model';
 
 const logger : log = new log({ displayFunctionName: false}); 
 
-const getProductsService = async(headers: HeadersInterface) => {
+const getProductsService = async(headers: IncomingHttpHeaders) => {
     try {
-        logger.info(`Entrance`);
-        const response = await ProductModel.findAll();
+        logger.info(`Starting service getProducts`);
 
-        logger.info(`Response data successfully`);
+        if(!headers.clientname) throw 'clientName not defined';
+        const response = await ProductModel(headers.clientname as string).findAll();
         logger.debug(`Response data: ${JSON.stringify(response)}`);
 
         return response;
-    } catch (error) {
+    } catch (error: unknown) {
         logger.error(error);
         throw error;
     }

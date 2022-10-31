@@ -15,6 +15,33 @@ const config = parseConfig({
         info        : "Port for application",
         env         : "PORT",
         required    : true,
+    },
+    tokenSecret: {
+        info        : "Token Secret JWT",
+        env         : "TOKEN_SECRET",
+        required    : true,
+    },
+    database: {
+        prefix: {
+            info: "Prefix database",
+            env: "DB_PREFIX",
+            required: true,
+        },
+        user: {
+            info: "User database",
+            env: "DB_USER",
+            required: true,
+        },
+        pass: {
+            info: "Password user database",
+            env: "DB_PASS",
+            required: true,
+        },
+        host: {
+            info: "IP/HOST database",
+            env: "DB_HOST",
+            required: true,
+        },
     }
 });
 

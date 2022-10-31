@@ -1,5 +1,8 @@
 interface HeadersInterface {
-    test: string;
+    clientName      : string;
+    authorization   : string;
+    online?         : boolean;
+    digitalMenu?    : boolean;
 }
 
 export default HeadersInterface;
