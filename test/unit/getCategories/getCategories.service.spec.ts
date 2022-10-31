@@ -1,7 +1,7 @@
-import getProductsService   from '../../../src/components/getProducts/getProducts.service';
-const name = 'getProductsService';
+import getCategoriesService   from '../../../src/components/getCategories/getCategories.service';
+const name = 'getCategoriesService';
 
-jest.mock('../../../src/models/product.model', () => () => {
+jest.mock('../../../src/models/category.model', () => () => {
     const findAll = jest.fn().mockReturnValue(1);
 
     return {
@@ -16,13 +16,13 @@ describe(name, () => {
             clientname: 'test'
         };
 
-        const response = await getProductsService(headers);
+        const response = await getCategoriesService(headers);
         expect(response).toBe(1);
     });
 
     test(`${name} - NOK`, async () => {
         try {
-            await getProductsService({});
+            await getCategoriesService({});
         } catch (error: unknown) {
             expect(error).toBeTruthy();
         }

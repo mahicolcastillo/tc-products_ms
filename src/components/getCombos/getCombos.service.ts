@@ -1,16 +1,16 @@
 import { IncomingHttpHeaders }  from 'http';
 import { Logger as log }        from 'tslog';
 
-import ProductModel             from '../../models/product.model';
+import ComboModel               from '../../models/combo.model';
 
 const logger : log = new log({ displayFunctionName: false}); 
 
-const getProductsService = async(headers: IncomingHttpHeaders) => {
+const getCombosService = async(headers: IncomingHttpHeaders) => {
     try {
-        logger.info(`Starting service getProducts`);
+        logger.info(`Starting service getCombos`);
 
         if(!headers.clientname) throw 'clientName not defined';
-        const response = await ProductModel(headers.clientname as string).findAll();
+        const response = await ComboModel(headers.clientname as string).findAll();
         logger.debug(`Response data: ${JSON.stringify(response)}`);
 
         return response;
@@ -20,4 +20,4 @@ const getProductsService = async(headers: IncomingHttpHeaders) => {
     }
 }
 
-export default getProductsService;
+export default getCombosService;

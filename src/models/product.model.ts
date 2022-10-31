@@ -1,14 +1,8 @@
-import { Sequelize, DataTypes } from 'sequelize';
-import config                   from '../config/global';
+import { DataTypes }    from 'sequelize';
+import connectionMongo  from './connection';
 
-const Model = (clientName: string) => {
-    const sequelize = new Sequelize(config.database.prefix+clientName, config.database.user, config.database.pass, {
-        host: config.database.host,
-        dialect: 'mysql',
-        logging: false
-    });
-    
-    const ProductModel = sequelize.define('Product', {
+const Model = (clientName: string) => {    
+    const ProductModel = connectionMongo(clientName).define('Product', {
         id_prod         : { type: DataTypes.NUMBER, autoIncrement: true, primaryKey: true },
         id_catg         : { type: DataTypes.NUMBER, allowNull: false },
         id_areap        : { type: DataTypes.NUMBER, allowNull: false },

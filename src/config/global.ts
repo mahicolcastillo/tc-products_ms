@@ -16,10 +16,17 @@ const config = parseConfig({
         env         : "PORT",
         required    : true,
     },
-    tokenSecret: {
-        info        : "Token Secret JWT",
-        env         : "TOKEN_SECRET",
-        required    : true,
+    tokens: {
+        tokenSecret: {
+            info        : "Token Secret JWT",
+            env         : "TOKEN_SECRET",
+            required    : true,
+        },
+        tokenSesion: {
+            info        : "Token Sesion",
+            env         : "TOKEN_SESION",
+            required    : true,
+        },
     },
     database: {
         prefix: {

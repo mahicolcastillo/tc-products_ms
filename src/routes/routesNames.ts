@@ -6,6 +6,14 @@ const routeNames = {
     getProducts: {
         name: 'getProducts',
         verb: 'GET',
+    },
+    getCombos: {
+        name: 'getCombos',
+        verb: 'GET',
+    },
+    getCategories: {
+        name: 'getCategories',
+        verb: 'GET',
     }
 }
 
